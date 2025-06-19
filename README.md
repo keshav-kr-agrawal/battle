@@ -23,7 +23,6 @@ Neon Arena is a fully responsive, pixel-perfect gaming website inspired by moder
 - Accessibility: ARIA labels, roles, keyboard navigation, focus management, high contrast.
 - Light/Dark Mode: Toggle with smooth transitions and localStorage persistence.
 - Animations: Subtle 3D, hover, focus, scroll-in, loader, and background effects.
-- Welcome Modal: Greets user by name (Web Speech API), stores for future visits.
 - Mobile-First: All sections and elements are visually separated and optimized for all devices.
 
 ## 🗂️ Project Structure
@@ -60,7 +59,13 @@ Neon Arena is a fully responsive, pixel-perfect gaming website inspired by moder
    ```
 
 2. Open with Live Server (recommended for localStorage and JS features):
-   
+   - If using VSCode, install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+   - Right-click `index.html` and select Open with Live Server.
+   - Or run:
+     ```sh
+     npx live-server --port=5502
+     ```
+   - The site will open at http://localhost:5502
 
 3. Enjoy Neon Arena!
 

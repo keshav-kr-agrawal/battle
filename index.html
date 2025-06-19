@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Arena - Ultimate Gaming Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Loader Page (full screen) -->
+  <div id="loader-page" class="loader-page" aria-label="Loading" role="status" aria-live="polite">
+    <div class="loader-logo">
+      <!-- Neon Arena SVG Logo -->
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#00ffe7" stroke-width="4"/><text x="32" y="40" text-anchor="middle" font-size="28" fill="#00ffe7" font-family="Orbitron, Arial, sans-serif">🎮</text></svg>
+    </div>
+    <div class="loader-spinner"></div>
+    <div class="loader-bar-container">
+      <div id="loader-bar" class="loader-bar"></div>
+      <div id="loader-percent" class="loader-percent">0%</div>
+    </div>
+    <div class="loader-text">Loading Neon Arena...</div>
+  </div>
+
+  <!-- Welcome Modal -->
+  <div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" style="display:none;">
+    <div class="welcome-modal-content">
+      <h2 id="welcome-title">Welcome to Neon Arena!</h2>
+      <form id="welcome-form" autocomplete="off">
+        <label for="welcome-name">Enter your gamer name:</label>
+        <input id="welcome-name" type="text" maxlength="24" required placeholder="Your name..." />
+        <button type="submit" class="cta gamer-glow">Enter Arena</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Animated 3D Background -->
+  <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+  <div id="gamer-bg"></div>
+
+  <!-- Site Logo/Icon (top left) -->
+  <div class="site-logo" aria-label="Neon Arena Home">
+    <svg width="44" height="44" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#00ffe7" stroke-width="4"/><text x="32" y="40" text-anchor="middle" font-size="28" fill="#00ffe7" font-family="Orbitron, Arial, sans-serif">🎮</text></svg>
+  </div>
+
+  <!-- Hamburger Menu Button -->
+  <button id="menu-toggle" class="hamburger" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Sidebar Navigation -->
+  <nav id="sidebar" class="sidebar" aria-label="Main Navigation" tabindex="-1">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#00ffe7" stroke-width="4"/><text x="32" y="40" text-anchor="middle" font-size="24" fill="#00ffe7" font-family="Orbitron, Arial, sans-serif">🎮</text></svg>
+      </div>
+    </div>
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#matches">Live Matches</a></li>
+      <li><a href="#players">Top Players</a></li>
+      <li><a href="#gamezone">Game Zone</a></li>
+      <li><a href="#stats">Stats</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Join</a></li>
+    </ul>
+    <button id="theme-toggle" aria-label="Toggle light/dark mode" tabindex="0">��</button>
+  </nav>
+
+  <!-- Main Content Wrapper -->
+  <div id="main-content" style="display:none;">
+    <!-- Social Dashboard -->
+    <section id="dashboard" class="scroll-fade-in gamer-dashboard" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title">Gamer Social Dashboard</h2>
+      <div class="dashboard-grid">
+        <!-- Community Feed -->
+        <div class="community-feed" aria-labelledby="feed-title">
+          <h3 id="feed-title">Community Feed</h3>
+          <form id="feed-form" class="feed-form" autocomplete="off" aria-label="Post to feed">
+            <input id="feed-input" type="text" maxlength="120" placeholder="Share something with the arena..." required />
+            <button type="submit" class="cta gamer-glow">Post</button>
+          </form>
+          <div id="feed-list" class="feed-list" aria-live="polite"></div>
+        </div>
+        <!-- Gamer Profiles -->
+        <div class="gamer-profiles" aria-labelledby="profiles-title">
+          <h3 id="profiles-title">Featured Gamers</h3>
+          <div id="profiles-list" class="profiles-list"></div>
+        </div>
+        <!-- Friends/Connections -->
+        <div class="friends-section" aria-labelledby="friends-title">
+          <h3 id="friends-title">Your Friends</h3>
+          <div id="friends-list" class="friends-list"></div>
+        </div>
+      </div>
+    </section>
+    <!-- Chat/DM Modal -->
+    <div id="chat-modal" class="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title" style="display:none;">
+      <div class="chat-modal-content">
+        <button id="chat-close" class="chat-close" aria-label="Close chat">&times;</button>
+        <h4 id="chat-title">Chat with <span id="chat-user"></span></h4>
+        <div id="chat-messages" class="chat-messages"></div>
+        <form id="chat-form" class="chat-form" autocomplete="off">
+          <input id="chat-input" type="text" maxlength="120" placeholder="Type a message..." required />
+          <button type="submit" class="cta gamer-glow">Send</button>
+        </form>
+      </div>
+    </div>
+    <!-- Hero Section -->
+    <section id="hero" tabindex="-1" aria-labelledby="hero-title" class="scroll-fade-in gamer-hero">
+      <h1 id="hero-title">Neon Arena</h1>
+      <p>The Ultimate Battleground for Gamers</p>
+      <button class="cta gamer-glow" aria-label="Join the Battle">Join the Battle</button>
+      <img src="assets/hero-gaming.png" alt="Epic Gaming Battle" class="gamer-hero-img" />
+    </section>
+
+    <!-- Live Matches Section -->
+    <section id="matches" aria-labelledby="matches-title" class="scroll-fade-in gamer-matches">
+      <h2 id="matches-title">Live Matches</h2>
+      <div class="matches-ticker">
+        <div class="match-card">
+          <span class="match-avatar match-icon" aria-label="Controller Icon">
+            <!-- Game Controller SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="18" width="36" height="18" rx="9" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/><circle cx="16" cy="27" r="3" fill="#181a3a"/><circle cx="32" cy="27" r="3" fill="#181a3a"/><rect x="22" y="24" width="4" height="6" rx="2" fill="#181a3a"/></svg>
+          </span>
+          <span class="match-vs">VS</span>
+          <span class="match-avatar match-icon" aria-label="Lightning Icon">
+            <!-- Lightning SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="24,6 20,26 28,26 18,42 30,22 22,22" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/></svg>
+          </span>
+          <span class="match-status live">LIVE</span>
+        </div>
+        <div class="match-card">
+          <span class="match-avatar match-icon" aria-label="Trophy Icon">
+            <!-- Trophy SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="12" width="24" height="16" rx="8" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/><rect x="20" y="28" width="8" height="8" rx="2" fill="#181a3a"/><rect x="18" y="36" width="12" height="4" rx="2" fill="#00ffe7"/></svg>
+          </span>
+          <span class="match-vs">VS</span>
+          <span class="match-avatar match-icon" aria-label="Crown Icon">
+            <!-- Crown SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="8,32 16,16 24,32 32,16 40,32" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/><rect x="12" y="32" width="24" height="6" rx="3" fill="#181a3a"/></svg>
+          </span>
+          <span class="match-status">Upcoming</span>
+        </div>
+        <div class="match-card">
+          <span class="match-avatar match-icon" aria-label="Star Icon">
+            <!-- Star SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="24,8 28,20 40,20 30,28 34,40 24,32 14,40 18,28 8,20 20,20" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/></svg>
+          </span>
+          <span class="match-vs">VS</span>
+          <span class="match-avatar match-icon" aria-label="Shield Icon">
+            <!-- Shield SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 6 L40 12 V22 C40 32 24 42 24 42 C24 42 8 32 8 22 V12 Z" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/></svg>
+          </span>
+          <span class="match-status">Upcoming</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Players Section -->
+    <section id="players" aria-labelledby="players-title" class="scroll-fade-in gamer-players">
+      <h2 id="players-title">Top Players</h2>
+      <div class="players-leaderboard">
+        <div class="player-card pro-3d">
+          <span class="player-avatar player-icon" aria-label="Crown Icon">
+            <!-- Crown SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="8,32 16,16 24,32 32,16 40,32" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/><rect x="12" y="32" width="24" height="6" rx="3" fill="#181a3a"/></svg>
+          </span>
+          <div class="player-info">
+            <span class="player-rank">#1</span>
+            <span class="player-name">Blaze</span>
+            <span class="player-score">9,800 pts</span>
+          </div>
+        </div>
+        <div class="player-card pro-3d">
+          <span class="player-avatar player-icon" aria-label="Lightning Icon">
+            <!-- Lightning SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="24,6 20,26 28,26 18,42 30,22 22,22" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/></svg>
+          </span>
+          <div class="player-info">
+            <span class="player-rank">#2</span>
+            <span class="player-name">PixelQueen</span>
+            <span class="player-score">9,200 pts</span>
+          </div>
+        </div>
+        <div class="player-card pro-3d">
+          <span class="player-avatar player-icon" aria-label="Trophy Icon">
+            <!-- Trophy SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="12" width="24" height="16" rx="8" fill="#00ffe7" stroke="#181a3a" stroke-width="2"/><rect x="20" y="28" width="8" height="8" rx="2" fill="#181a3a"/><rect x="18" y="36" width="12" height="4" rx="2" fill="#00ffe7"/></svg>
+          </span>
+          <div class="player-info">
+            <span class="player-rank">#3</span>
+            <span class="player-name">ShadowStrike</span>
+            <span class="player-score">8,950 pts</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Zone Section (update for start button) -->
+    <section id="gamezone" aria-labelledby="gamezone-title" class="scroll-fade-in gamer-gamezone">
+      <h2 id="gamezone-title">Game Zone: Memory Match</h2>
+      <div class="game-description">Test your memory! Flip the cards to find all the pairs. Fastest time wins.</div>
+      <div class="game-controls">
+        <button id="start-game" class="cta gamer-glow">Start Game</button>
+        <button id="restart-game" class="cta gamer-glow" style="display:none;">Restart</button>
+      </div>
+      <div id="memory-game-wrapper" class="memory-game-wrapper">
+        <div id="memory-game" class="memory-game-grid" aria-label="Memory Card Game" tabindex="0">
+          <!-- Cards will be generated by JS -->
+        </div>
+      </div>
+      <div class="game-status">
+        <span id="moves">Moves: 0</span> | <span id="timer">Time: 0s</span>
+      </div>
+      <div id="last-score-container"></div>
+    </section>
+
+    <!-- Stats/Counters Section -->
+    <section id="stats" aria-labelledby="stats-title" class="scroll-fade-in gamer-stats">
+      <h2 id="stats-title">Arena Stats</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" data-target="50000">0</span>
+          <span class="stat-label">Gamers</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="1200">0</span>
+          <span class="stat-label">Live Matches</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="300">0</span>
+          <span class="stat-label">Tournaments</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="75">0</span>
+          <span class="stat-label">Awards</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features/Cards Section -->
+    <section id="features" aria-labelledby="features-title" class="scroll-fade-in">
+      <h2 id="features-title">Game-Changing Features</h2>
+      <div class="card-grid">
+        <article class="card gamer-card" tabindex="0" aria-label="Multiplayer Battles">
+          <img src="assets/feature-multiplayer.svg" alt="Multiplayer Icon" class="card-icon" />
+          <h3>Multiplayer Battles</h3>
+          <p>Team up or go solo in real-time PvP and PvE battles with players worldwide.</p>
+        </article>
+        <article class="card gamer-card" tabindex="0" aria-label="Tournaments">
+          <img src="assets/feature-tournament.svg" alt="Tournaments Icon" class="card-icon" />
+          <h3>Epic Tournaments</h3>
+          <p>Compete in weekly tournaments for glory, prizes, and leaderboard dominance.</p>
+        </article>
+        <article class="card gamer-card" tabindex="0" aria-label="Leaderboards">
+          <img src="assets/feature-leaderboard.svg" alt="Leaderboard Icon" class="card-icon" />
+          <h3>Global Leaderboards</h3>
+          <p>Climb the ranks, earn badges, and show off your skills to the world.</p>
+        </article>
+        <article class="card gamer-card" tabindex="0" aria-label="Customization">
+          <img src="assets/feature-customize.svg" alt="Customization Icon" class="card-icon" />
+          <h3>Avatar Customization</h3>
+          <p>Unlock skins, emotes, and gear to personalize your in-game identity.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" aria-labelledby="gallery-title" class="scroll-fade-in">
+      <h2 id="gallery-title">Game Gallery</h2>
+      <div class="gallery-grid">
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" alt="Esports Arena" loading="lazy" />
+          <figcaption><span class="gallery-badge">Arena</span> Esports Showdown</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Futuristic City Map" loading="lazy" />
+          <figcaption><span class="gallery-badge">Map</span> Futuristic City</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Team Victory" loading="lazy" />
+          <figcaption><span class="gallery-badge">Victory</span> Team Win Moment</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Gamer Setup" loading="lazy" />
+          <figcaption><span class="gallery-badge">Setup</span> Pro Gamer Rig</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" alt="Cosplay Event" loading="lazy" />
+          <figcaption><span class="gallery-badge">Cosplay</span> Epic Cosplay</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Retro Gaming" loading="lazy" />
+          <figcaption><span class="gallery-badge">Retro</span> Classic Gaming</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="VR Experience" loading="lazy" />
+          <figcaption><span class="gallery-badge">VR</span> Virtual Reality</figcaption>
+        </figure>
+        <figure class="gamer-gallery-item">
+          <img src="https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=600&q=80" alt="Indie Game" loading="lazy" />
+          <figcaption><span class="gallery-badge">Indie</span> Indie Game Art</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" aria-labelledby="testimonials-title" class="scroll-fade-in gamer-testimonials">
+      <h2 id="testimonials-title">What Gamers Say</h2>
+      <div class="testimonial-slider">
+        <div class="testimonial active">
+          <p>"Neon Arena is the best gaming platform I've ever played on. The tournaments are intense and the community is awesome!"</p>
+          <span>- Blaze, Pro Gamer</span>
+        </div>
+        <div class="testimonial">
+          <p>"I love customizing my avatar and climbing the leaderboards. The graphics and effects are next level!"</p>
+          <span>- PixelQueen, Top 10 Player</span>
+        </div>
+        <div class="testimonial">
+          <p>"The multiplayer battles are so smooth and competitive. I made so many friends here!"</p>
+          <span>- ShadowStrike, Clan Leader</span>
+        </div>
+      </div>
+      <div class="testimonial-controls">
+        <button class="testimonial-prev" aria-label="Previous testimonial">&#8592;</button>
+        <button class="testimonial-next" aria-label="Next testimonial">&#8594;</button>
+      </div>
+    </section>
+
+    <!-- Contact/Join Section -->
+    <section id="contact" aria-labelledby="contact-title" class="scroll-fade-in">
+      <h2 id="contact-title">Join Neon Arena</h2>
+      <form autocomplete="off">
+        <label for="name">Gamer Tag</label>
+        <input id="name" type="text" placeholder="Your Gamer Tag" required />
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Your Email" required />
+        <label for="message">Why do you want to join?</label>
+        <textarea id="message" placeholder="Tell us why you're a true gamer!" required></textarea>
+        <button type="submit" class="cta gamer-glow">Join Now</button>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" aria-label="Site Footer">
+      <p>&copy; 2024 Neon Arena. Level up. Game on.</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">&#8679;</button>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html> 
